@@ -18,6 +18,8 @@ import officerRoutes from './routes/officerRoutes';
 app.use('/api/officer', officerRoutes);
 import analyticsRoutes from './routes/analyticsRoutes';
 app.use('/api/analytics', analyticsRoutes);
+import adminRoutes from './routes/adminRoutes';
+app.use('/api/admin', adminRoutes);
 
 app.get('/', (req, res) => {
     res.send('FinTech Lending API is running');

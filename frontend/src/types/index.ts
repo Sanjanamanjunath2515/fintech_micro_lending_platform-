@@ -6,6 +6,7 @@ export interface User {
     name: string;
     email: string;
     role: Role;
+    status: 'ACTIVE' | 'BLOCKED';
     token?: string;
     profile?: Profile;
 }
@@ -44,4 +45,17 @@ export interface AnalyticsData {
         rejected: number;
         defaulted: number;
     }
+}
+
+export interface AuditLog {
+    id: string;
+    userId: string;
+    action: string;
+    details: string;
+    timestamp: string;
+    user: {
+        name: string;
+        email: string;
+        role: Role;
+    };
 }

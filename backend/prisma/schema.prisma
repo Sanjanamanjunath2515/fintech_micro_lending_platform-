@@ -17,6 +17,7 @@ model User {
   password  String
   name      String
   role      String   @default("APPLICANT")
+  status    String   @default("ACTIVE") // ACTIVE, BLOCKED
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

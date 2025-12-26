@@ -19,7 +19,11 @@ export default function Login() {
         try {
             const { data } = await axios.post('http://localhost:3000/api/auth/login', { email, password });
             login(data.token, data);
-            navigate('/');
+            if (data.role === 'ADMIN') {
+                navigate('/admin');
+            } else {
+                navigate('/');
+            }
         } catch (err: any) {
             setError('Invalid credentials');
         }

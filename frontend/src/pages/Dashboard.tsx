@@ -9,7 +9,7 @@ export default function Dashboard() {
 
     if (!user) return <div>Loading...</div>;
 
-    const isLoanOfficer = user.role === 'LOAN_OFFICER';
+    const isLoanOfficer = user.role === 'LOAN_OFFICER' || user.role === 'ADMIN' || user.role === 'RISK_ANALYST';
 
     return (
         <div className={`min-h-screen ${isLoanOfficer ? 'bg-gray-900 text-white' : 'bg-background'}`}>

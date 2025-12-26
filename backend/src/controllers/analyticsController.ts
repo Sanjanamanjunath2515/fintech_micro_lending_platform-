@@ -18,6 +18,10 @@ export const getDashboardStats = async (req: Request, res: Response) => {
             _sum: { remainingAmount: true }
         });
 
+        const totalRepayments = await prisma.repayment.count();
+        const onTimeRepayments = await prisma.repayment.count({ where: { status: 'ON_TIME' } });
+        const recoveryRate = totalRepayments > 0 ? (onTimeRepayments / totalRepayments) * 100 : 0;
+
         res.json({
             totalLoans,
             approvalRate: totalLoans > 0 ? (approved / totalLoans) * 100 : 0,
@@ -25,6 +29,7 @@ export const getDashboardStats = async (req: Request, res: Response) => {
             defaultRate: totalLoans > 0 ? (defaulted / totalLoans) * 100 : 0,
             avgCreditScore: avgScore._avg.creditScore || 0,
             totalOutstanding: outstanding._sum.remainingAmount || 0,
+            recoveryRate,
             breakdown: {
                 active, approved, rejected, defaulted
             }
