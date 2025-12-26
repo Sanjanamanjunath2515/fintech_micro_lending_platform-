@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 
 export default function ApplicantDashboard() {
     const [loans, setLoans] = useState<Loan[]>([]);
+    const [creditScore, setCreditScore] = useState<number | null>(null);
     const [showApply, setShowApply] = useState(false);
 
     // Form State
@@ -30,8 +31,18 @@ export default function ApplicantDashboard() {
         }
     };
 
+    const fetchCreditScore = async () => {
+        try {
+            const { data } = await axios.get('http://localhost:3000/api/auth/my-credit-score', { headers });
+            setCreditScore(data.creditScore);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
         fetchLoans();
+        fetchCreditScore();
     }, []);
 
     const handleApply = async (e: React.FormEvent) => {
@@ -59,7 +70,15 @@ export default function ApplicantDashboard() {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-3xl font-bold tracking-tight">My Loans</h2>
-                <Button onClick={() => setShowApply(!showApply)}>{showApply ? 'Cancel' : 'Apply for Loan'}</Button>
+                <div className="flex gap-4 items-center">
+                    {creditScore !== null && (
+                        <Card className="p-4 bg-secondary">
+                            <div className="text-sm font-medium text-muted-foreground">Credit Score</div>
+                            <div className="text-2xl font-bold">{creditScore}</div>
+                        </Card>
+                    )}
+                    <Button onClick={() => setShowApply(!showApply)}>{showApply ? 'Cancel' : 'Apply for Loan'}</Button>
+                </div>
             </div>
 
             {showApply && (

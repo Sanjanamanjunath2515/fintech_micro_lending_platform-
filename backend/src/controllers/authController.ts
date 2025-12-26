@@ -54,11 +54,23 @@ export const login = async (req: Request, res: Response) => {
     }
 };
 
+
 export const getMe = async (req: any, res: Response) => {
     const user = await prisma.user.findUnique({ where: { id: req.user.id }, include: { profile: true } });
     if (user) {
         res.json(user);
     } else {
         res.status(404).json({ message: 'User not found' });
+    }
+};
+
+export const getMyCreditScore = async (req: any, res: Response) => {
+    try {
+        const profile = await prisma.profile.findUnique({ where: { userId: req.user.id } });
+        // Default to 300 if no profile or score exists yet
+        const creditScore = profile ? profile.creditScore : 300;
+        res.json({ creditScore });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error fetching credit score' });
     }
 };
