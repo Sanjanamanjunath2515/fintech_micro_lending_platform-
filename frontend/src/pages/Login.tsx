@@ -25,7 +25,8 @@ export default function Login() {
                 navigate('/');
             }
         } catch (err: any) {
-            setError('Invalid credentials');
+            console.error('Login error:', err);
+            setError(err.response?.data?.message || 'Login failed. Please check your connection and credentials.');
         }
     };
 
